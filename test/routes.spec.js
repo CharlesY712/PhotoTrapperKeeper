@@ -33,6 +33,8 @@ describe('Endpoint tests', () => {
       });
   });
 
+
+
   it('should POST a photo to photos database', (done) => {
     chai.request(app)
       .post('/api/v1/photos')
@@ -79,4 +81,6 @@ describe('Endpoint tests', () => {
         done();
       });
   });
+
+  
 });
