@@ -28,7 +28,7 @@ $("#photos-form").submit(async event => {
 });
 
 const getPhotos = async () => {
-  $('#photos-container').innerHTML = ''
+  $('#photos-container').html('')
 
   const response = await fetch('/api/v1/photos')
   const photos = await response.json()
@@ -38,10 +38,17 @@ const getPhotos = async () => {
     <article class="photo-wrapper" id="${photo.id}">
       <img src="${photo.url}" alt="${photo.title} id="photo" height="200" width="200">
       <h3>${photo.title}</h3>
-      <button>Delete</button>
+      <button onClick="deleteFetch(${photo.id})">Delete</button>
     </article>
   `)
   });
+}
+
+const deleteFetch = async (id) => {
+  const response = await fetch(`/api/v1/photos/${id}`, {
+    method: 'DELETE'
+  })
+  getPhotos()
 }
 
 window.onload = () => {
