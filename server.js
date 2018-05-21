@@ -48,7 +48,7 @@ app.post('/api/v1/photos', (request, response) => {
 app.delete('/api/v1/photos/:id', (request, response) => {
   database('photos').where('id', request.params.id).del()
     .then(deleteCount => {
-      return response.status(204).json({success: `Photo with and id of ${request.params.id} deleted.`});
+      return response.status(200).json({success: `Photo with an id of ${request.params.id} deleted.`});
     })
     .catch(err => {
       return response.status(500).json({err});
