@@ -1,3 +1,11 @@
 body {
   text-align: center;
 }
+
+.photo-wrapper {
+  border: 2px solid black;
+  margin: 30px auto;
+  width: 300px;
+  height: 300px;
+}
+

@@ -1,4 +1,4 @@
-$("#photos-form").submit(async (event) => {
+$("#photos-form").submit(async event => {
   event.preventDefault();
   const title = $('#title').val();
   const url = $('#url').val();
@@ -16,8 +16,9 @@ $("#photos-form").submit(async (event) => {
     })
     if (response.status === 201) {
       $('#title').val('');
-      $('#url').val('');
-      alert("You successfully added a photo!")
+      $('#url').val('');      
+      getPhotos();
+      alert("You successfully added a photo!");
     } else {
       alert("You did something wrong")
     }
@@ -25,3 +26,24 @@ $("#photos-form").submit(async (event) => {
     console.log({err})
   }
 });
+
+const getPhotos = async () => {
+  $('#photos-container').innerHTML = ''
+
+  const response = await fetch('/api/v1/photos')
+  const photos = await response.json()
+
+  photos.forEach(photo => {
+    $('#photos-container').append(`
+    <article class="photo-wrapper" id="${photo.id}">
+      <img src="${photo.url}" alt="${photo.title} id="photo" height="200" width="200">
+      <h3>${photo.title}</h3>
+      <button>Delete</button>
+    </article>
+  `)
+  });
+}
+
+window.onload = () => {
+  getPhotos()
+}
