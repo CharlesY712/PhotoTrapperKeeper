@@ -20,29 +20,37 @@ app.listen(app.get('port'), () => {
 app.get('/api/v1/photos', (request, response) => {
   database('photos').select()
     .then((photos) => {
-      response.status(200).json(photos);
+      return response.status(200).json(photos);
     })
     .catch((error) => {
-      response.status(500).json({ error });
+      return response.status(500).json({ error });
     });
 });
 
-app.post('/api/v1/photos', (req, res) => {
-  const photo = req.body;
+app.post('/api/v1/photos', (request, response) => {
+  const photo = request.body;
 
   for (let requiredParameter of ['title', 'url']) {
     if (!photo[requiredParameter]) {
-      return res.status(422)
-        .send(`You are missing a ${requiredParameter}`);
+      return response.status(422).send(`You are missing a ${requiredParameter}`);
     }
   }
 
   database('photos').insert(photo, 'title')
-    .then(photoID => {
-      return res.status(201)
-        .json(`Successfully added ${photoID} to database.`);
+    .then(photoTitle => {
+      return response.status(201).json(`Successfully added ${photoTitle} to photos database.`);
     })
     .catch(err => {
-      return res.status(500).json({err});
+      return response.status(500).json({err});
+    });
+});
+
+app.delete('/api/v1/photos/:id', (request, response) => {
+  database('photos').where('id', request.params.id).del()
+    .then(deleteCount => {
+      return response.status(204).json({success: `Photo with and id of ${request.params.id} deleted.`});
+    })
+    .catch(err => {
+      return response.status(500).json({err});
     });
 });
