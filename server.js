@@ -54,3 +54,5 @@ app.delete('/api/v1/photos/:id', (request, response) => {
       return response.status(500).json({err});
     });
 });
+
+module.exports = { app, database };
