@@ -18,9 +18,6 @@ $("#photos-form").submit(async event => {
       $('#title').val('');
       $('#url').val('');      
       getPhotos();
-      alert("You successfully added a photo!");
-    } else {
-      alert("You did something wrong")
     }
   } catch (err) {
     console.log({err})
