@@ -1,0 +1,34 @@
+{
+  "name": "PhotoTraperKeeper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "NODE_ENV=test mocha --exit",
+    "eslint": "./node_modules/eslint/bin/eslint.js ./*.js ./db/**/*.js ./test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CharlesY712/PhotoTrapperKeeper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CharlesY712/PhotoTrapperKeeper/issues"
+  },
+  "homepage": "https://github.com/CharlesY712/PhotoTrapperKeeper#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "knex": "^0.14.6",
+    "pg": "^7.4.3"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "git+https://github.com/chaijs/chai-http.git#3ea4524",
+    "eslint": "^4.19.1",
+    "mocha": "^5.2.0"
+  }
+}
