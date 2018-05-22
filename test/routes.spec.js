@@ -39,7 +39,7 @@ describe('Endpoint tests', () => {
     chai.request(app)
       .post('/api/v1/photos')
       .send({
-        title: 'Sexy Subaru',
+        title: 'WRC Subaru',
         url: 'https://i.redd.it/k0g6d09smzaz.jpg'
       })
       .end((err, response) => {
@@ -78,9 +78,31 @@ describe('Endpoint tests', () => {
       .delete('/api/v1/photos/1')
       .end((error, response) => {
         response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.be.an('object');
         done();
       });
   });
 
-  
+  it('should not DELETE photo from photo database when the wrong ID is sent', (done) => {
+    chai.request(app)
+      .delete('/api/v1/photos/5')
+      .end((error, response) => {
+        response.should.have.status(422);
+        response.should.be.json;
+        response.body.should.be.an('object');
+        done();
+      });
+  });
+
+  it('should not DELETE photo from photo database when ID is not an integer', (done) => {
+    chai.request(app)
+      .delete('/api/v1/photos/7.5')
+      .end((error, response) => {
+        response.should.have.status(500);
+        response.should.be.json;
+        response.body.should.be.an('object');
+        done();
+      });
+  });
 });
