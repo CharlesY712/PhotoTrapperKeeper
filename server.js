@@ -22,8 +22,8 @@ app.get('/api/v1/photos', (request, response) => {
     .then((photos) => {
       return response.status(200).json(photos);
     })
-    .catch((error) => {
-      return response.status(500).json({ error });
+    .catch((err) => {
+      return response.status(500).json(err);
     });
 });
 
@@ -32,16 +32,16 @@ app.post('/api/v1/photos', (request, response) => {
 
   for (let requiredParameter of ['title', 'url']) {
     if (!photo[requiredParameter]) {
-      return response.status(422).send(`You are missing a ${requiredParameter}`);
+      return response.status(422).json({error: `You are missing a ${requiredParameter}`});
     }
   }
 
   database('photos').insert(photo, 'title')
     .then(photoTitle => {
-      return response.status(201).json(`Successfully added ${photoTitle} to photos database.`);
+      return response.status(201).json({success: `Successfully added ${photoTitle} to photos database.`});
     })
     .catch(err => {
-      return response.status(500).json({err});
+      return response.status(500).json(err);
     });
 });
 
@@ -51,11 +51,11 @@ app.delete('/api/v1/photos/:id', (request, response) => {
       if (deleteCount === 1) {
         return response.status(200).json({success: `Photo with an id of ${request.params.id} deleted.`});
       } else {
-        return response.status(422).json({failure: `Photo with an id of ${request.params.id} does not exist.`})
+        return response.status(404).json({error: `Photo with an id of ${request.params.id} does not exist.`});
       }
     })
     .catch(err => {
-      return response.status(500).json({err});
+      return response.status(500).json(err);
     });
 });
 

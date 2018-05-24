@@ -33,8 +33,6 @@ describe('Endpoint tests', () => {
       });
   });
 
-
-
   it('should POST a photo to photos database', (done) => {
     chai.request(app)
       .post('/api/v1/photos')
@@ -44,7 +42,8 @@ describe('Endpoint tests', () => {
       })
       .end((err, response) => {
         response.should.have.status(201);
-        response.body.should.be.a('string');
+        response.body.should.be.an('object');
+        response.body.should.have.property('success', 'Successfully added WRC Subaru to photos database.');
         done();
       });
   });
@@ -57,6 +56,7 @@ describe('Endpoint tests', () => {
       })
       .end((err, response) => {
         response.should.have.status(422);
+        response.body.should.have.property('error', 'You are missing a title');
         done();
       });
   });
@@ -65,10 +65,11 @@ describe('Endpoint tests', () => {
     chai.request(app)
       .post('/api/v1/photos')
       .send({
-        title: 'Sexy Subaru'
+        title: 'WRC Subaru'
       })
       .end((err, response) => {
         response.should.have.status(422);
+        response.body.should.have.property('error', 'You are missing a url');
         done();
       });
   });
@@ -76,10 +77,11 @@ describe('Endpoint tests', () => {
   it('should DELETE photo from photo database', (done) => {
     chai.request(app)
       .delete('/api/v1/photos/1')
-      .end((error, response) => {
+      .end((err, response) => {
         response.should.have.status(200);
         response.should.be.json;
         response.body.should.be.an('object');
+        response.body.should.have.property('success', 'Photo with an id of 1 deleted.');
         done();
       });
   });
@@ -87,10 +89,11 @@ describe('Endpoint tests', () => {
   it('should not DELETE photo from photo database when the wrong ID is sent', (done) => {
     chai.request(app)
       .delete('/api/v1/photos/5')
-      .end((error, response) => {
-        response.should.have.status(422);
+      .end((err, response) => {
+        response.should.have.status(404);
         response.should.be.json;
         response.body.should.be.an('object');
+        response.body.should.have.property('error', 'Photo with an id of 5 does not exist.');
         done();
       });
   });
@@ -98,10 +101,11 @@ describe('Endpoint tests', () => {
   it('should not DELETE photo from photo database when ID is not an integer', (done) => {
     chai.request(app)
       .delete('/api/v1/photos/7.5')
-      .end((error, response) => {
+      .end((err, response) => {
         response.should.have.status(500);
         response.should.be.json;
         response.body.should.be.an('object');
+        response.body.should.have.property('name', 'error');
         done();
       });
   });
